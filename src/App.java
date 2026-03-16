@@ -40,9 +40,11 @@ public class App {
      */
     static int codigo1(int[] vetor) {
         int resposta = 0;
-        for (int i = 0; i < vetor.length; i += 2) {
+        for (int i = 0; i < vetor.length; i += 2) { //O(n)
             resposta += vetor[i]%2;
+            operacoes++;
         }
+        System.out.println("Operações: "+ operacoes);
         return resposta;
     }
 
@@ -53,12 +55,14 @@ public class App {
      */
     static int codigo2(int[] vetor) {
         int contador = 0;
-        for (int k = (vetor.length - 1); k > 0; k /= 2) {
+        for (int k = (vetor.length - 1); k > 0; k /= 2) { //O(lg n)
             for (int i = 0; i <= k; i++) {
                 contador++;
+                operacoes++;
             }
 
         }
+        System.out.println("Operações: "+ operacoes);
         return contador;
     }
 
@@ -67,15 +71,17 @@ public class App {
      * @param vetor Vetor com dados para teste.
      */
     static void codigo3(int[] vetor) {
-        for (int i = 0; i < vetor.length - 1; i++) {
-            int menor = i;
-            for (int j = i + 1; j < vetor.length; j++) {
-                if (vetor[j] < vetor[menor])
-                    menor = j;
+            for (int i = 0; i < vetor.length - 1; i++) {
+                int menor = i;
+                for (int j = i + 1; j < vetor.length; j++) { 
+                    operacoes++;//O(n^2)
+                    if (vetor[j] < vetor[menor]){
+                        menor = j;
+                    }
+                int temp = vetor[i];
+                vetor[i] = vetor[menor];
+                vetor[menor] = temp;
             }
-            int temp = vetor[i];
-            vetor[i] = vetor[menor];
-            vetor[menor] = temp;
         }
     }
 
@@ -85,9 +91,10 @@ public class App {
      * @return Um inteiro que significa...
      */
     static int codigo4(int n) {
-        if (n <= 2)
+        if (n <= 2)    
             return 1;
         else
+            operacoes++;
             return codigo4(n - 1) + codigo4(n - 2);
     }
 
@@ -105,6 +112,11 @@ public class App {
         
     }
     public static void main(String[] args) {
-        
+        operacoes = 0;
+        long inicio = System.nanoTime();
+        codigo1(tamanhosTesteGrande);
+        long fim = System.nanoTime();
+        System.out.println("Operações: "+ operacoes+
+        "Tempo(ns): "+(fim - inicio));
     }
 }
